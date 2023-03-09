@@ -1,0 +1,1 @@
+[eclipse-ee4j/jersey#5279](https://github.com/eclipse-ee4j/jersey/issues/5279)
