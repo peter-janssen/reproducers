@@ -1,5 +1,7 @@
 package com.example.demo;
 
+import org.glassfish.jersey.server.ContainerResponse;
+import org.glassfish.jersey.servlet.internal.ResponseWriter;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,14 +19,29 @@ public class HelloResourceSpringBootTest {
     @Autowired
     public TestRestTemplate testRestTemplate;
 
+    /**
+     * This test succeeds when the following code change is made:
+     * <p/>
+     * {@link ResponseWriter#writeResponseStatusAndHeaders(long, ContainerResponse)}
+     *
+     * <pre>
+     *     {@code
+     *          // modification of the response headers will have no effect
+     *          // after the invocation of sendError.
+     * -        final MultivaluedMap<String, String> headers = getResponseContext().getStringHeaders();
+     * +        final MultivaluedMap<String, String> headers = responseContext.getStringHeaders();
+     *          for (final Map.Entry<String, List<String>> e : headers.entrySet()) }{
+     * </pre>
+     * <p/>
+     */
     @Test
     void responseBodyTruncated() {
         final ResponseEntity<String> response = testRestTemplate.getForEntity("/fail", String.class);
-        final String expectedResponseBody = "<!doctype html><html lang=\"en\"><head><title>HTTP Status 500 – Internal Server Error</title><style type=\"text/css\">body {font-family:Tahoma,Arial,sans-serif;} h1, h2, h3, b {color:white;background-color:#525D76;} h1 {font-size:22px;} h2 {font-size:16px;} h3 {font-size:14px;} p {font-size:12px;} a {color:black;} .line {height:1px;background-color:#525D76;border:none;}</style></head><body><h1>HTTP Status 500 – Internal Server Error</h1></body></html>";
+        final String expectedResponseBody = "An exception mapping did not successfully produce and processed a response. Logging the exception propagated to the default exception mapper.";
         assertAll(
-            () -> assertEquals(INTERNAL_SERVER_ERROR, response.getStatusCode()),
-            () -> assertEquals(455L, response.getHeaders().getContentLength()),
-            () -> assertEquals(expectedResponseBody, response.getBody())
+                () -> assertEquals(INTERNAL_SERVER_ERROR, response.getStatusCode()),
+                () -> assertEquals(141L, response.getHeaders().getContentLength()),
+                () -> assertEquals(expectedResponseBody, response.getBody())
         );
     }
 }

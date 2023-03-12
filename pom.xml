@@ -13,7 +13,11 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>demo</name>
     <description>Demo project for Spring Boot</description>
-    
+
+    <properties>
+<!--        <jersey.version>3.1.99-SNAPSHOT</jersey.version>-->
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -54,7 +58,7 @@
                         </goals>
                         <configuration>
                             <excludes>
-                                <exclude>**/ResponseTruncatedTest.java</exclude>
+                                <exclude>**/HelloResourceJerseyTest.java</exclude>
                             </excludes>
                             <testFailureIgnore>true</testFailureIgnore>
                         </configuration>
@@ -67,7 +71,7 @@
                         </goals>
                         <configuration>
                             <includes>
-                                <include>**/ResponseTruncatedTest.java</include>
+                                <include>**/HelloResourceJerseyTest.java</include>
                             </includes>
                             <classpathDependencyExcludes>
                                 <classpathDependencyExclude>
