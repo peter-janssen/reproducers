@@ -1,0 +1,10 @@
+---
+custom:
+  record:
+    map:
+      entry1:
+        first: John
+        second: Doe
+      "[entry-2]":
+        first: Jane
+        second: Doe
